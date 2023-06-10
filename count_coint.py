@@ -31,6 +31,8 @@ plt.imshow(dilated, cmap='gray')
 rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 cv2.drawContours(rgb, cnt, -1, (255, 0,0), 2) #   
 
+# put model here
+
 print('Coins in the image: ', len(cnt))
 plt.imshow(rgb)
 plt.show()
