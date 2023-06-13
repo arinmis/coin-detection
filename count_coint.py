@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 import sys
+import dilate
 
 if len(sys.argv) < 2:
     print("usage: python count_coins.py target.jpg")
@@ -22,7 +23,7 @@ canny = cv2.Canny(blur, 10, 200)
 plt.imshow(canny, cmap='gray')
 
 # make edges clear
-dilated = cv2.dilate(canny, (10, 10), iterations = 5)
+dilated = dilate.dilate_image(canny, (4, 4), iterations = 5)
 plt.imshow(dilated, cmap='gray')
 plt.show()
 
