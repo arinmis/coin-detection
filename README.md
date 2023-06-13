@@ -1,7 +1,6 @@
 # coin-detection
 detect coin in a scene
 
-
 ## To-Do
 
 1. Determine model(probably CNN)
