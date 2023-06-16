@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import sys
 import dilate
+import contours
 
 if len(sys.argv) < 2:
     print("usage: python count_coins.py target.jpg")
@@ -30,7 +31,7 @@ plt.show()
 # 3. Contour the coins
 (cnt, heirarchy) = cv2.findContours(dilated.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
 rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-cv2.drawContours(rgb, cnt, -1, (255, 0,0), 2) #   
+contours.draw_contours(rgb, cnt,(255, 0,0))  
 
 # put model here
 # https://blog.paperspace.com/writing-cnns-from-scratch-in-pytorch/
