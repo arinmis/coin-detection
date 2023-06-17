@@ -3,7 +3,7 @@ from tensorflow.keras.models import load_model
 # pass image to predict, read with cv2
 '''
 import cv2
-img = cv2.imread('154006829.jpg')
+img = cv2.imread('coins.jpg')
 '''
 def predict(img):
     model = load_model('coin_classifier.h5')
