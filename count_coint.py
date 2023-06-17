@@ -4,6 +4,9 @@ import matplotlib.pyplot as plt
 import sys
 import dilate
 import contours
+import canny
+import gaussianblur
+import cvt_color as cvt
 
 if len(sys.argv) < 2:
     print("usage: python count_coins.py target.jpg")
@@ -11,16 +14,16 @@ if len(sys.argv) < 2:
 
 # return numpy array
 image = cv2.imread(sys.argv[1])
-gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+gray = cvt.rgb2gray(image)
 # plt.imshow(gray, cmap='gray');
 
 # 1. make it blur
-blur = cv2.GaussianBlur(gray, (31,31), 1)
+blur = gaussianblur.gaussian_blur(gray, 31, 1)
 plt.imshow(blur, cmap='gray')
 # plt.show()
 
 # 2. apply edge detection
-canny = cv2.Canny(blur, 10, 200)
+canny = canny.canny_edge_detection(blur)
 plt.imshow(canny, cmap='gray')
 
 # make edges clear
@@ -29,8 +32,8 @@ plt.imshow(dilated, cmap='gray')
 plt.show()
 
 # 3. Contour the coins
-(cnt, heirarchy) = cv2.findContours(dilated.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
-rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+cnt= contours.find_contours(dilated.copy())
+rgb = cvt.bgr2rgb(image)
 contours.draw_contours(rgb, cnt,(255, 0,0))  
 
 # put model here
