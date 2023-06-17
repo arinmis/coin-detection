@@ -61,5 +61,10 @@ model.summary()
 # train
 logdir='logs'
 tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=logdir)
-hist = model.fit(train, epochs=20, validation_data=val, callbacks=[tensorboard_callback])
+hist = model.fit(train, epochs=1, validation_data=val, callbacks=[tensorboard_callback])
+
+# evalutions
+
+# save the model
+model.save(os.path.join('','coin_classifier.h5'))
 
