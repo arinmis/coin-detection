@@ -1,20 +1,21 @@
 import numpy as np
 import cv2
 
-
 def find_contours(binary):
-    contours = []
-    visited = np.zeros(binary.shape, dtype=bool)
+    contours = []  # List to store all contours found
+    visited = np.zeros(binary.shape, dtype=bool)  # Array to track visited pixels
 
+    # Iterate over each pixel in the binary image
     for i in range(1, binary.shape[0] - 1):
         for j in range(1, binary.shape[1] - 1):
             if binary[i, j] == 255 and not visited[i, j]:
+                # Start a new contour if the current pixel is white and not visited
                 contour = []
-                stack = [(i, j)]
+                stack = [(i, j)]  # Stack to store pixels of the contour
 
                 while stack:
                     x, y = stack.pop()
-                    visited[x, y] = True
+                    visited[x, y] = True  # Mark the pixel as visited
 
                     neighbors = get_neighbors(binary, visited, x, y)
                     for neighbor in neighbors:
@@ -23,31 +24,37 @@ def find_contours(binary):
                         visited[nx, ny] = True
 
                     if not any(get_neighbors(binary, visited, x, y)):
+                        # If the current pixel has no unvisited neighbors, add it to the contour
                         contour.append((x, y))
 
-                contours.append(contour)
+                contours.append(contour)  # Add the contour to the list
 
     return contours
 
 def get_neighbors(binary, visited, x, y):
-    neighbors = []
-    directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+    neighbors = []  # List to store valid neighbors
+    directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]  # Possible directions
 
     for dx, dy in directions:
         nx, ny = x + dx, y + dy
-        if nx >= 0 and nx < binary.shape[0] and ny >= 0 and ny < binary.shape[1] and binary[nx, ny] == 255 and not visited[nx, ny]:
+        if (
+            nx >= 0 and nx < binary.shape[0] and ny >= 0 and ny < binary.shape[1]
+            and binary[nx, ny] == 255 and not visited[nx, ny]
+        ):
+            # Check if the neighbor is within image bounds, white, and unvisited
             neighbors.append((nx, ny))
 
     return neighbors
-
 def draw_contours(image, contours, color=(0, 255, 0)):
     for contour in contours:
         contour = np.array(contour)
         contour = contour.squeeze().reshape(-1, 2)
+
+        # Iterate over each point in the contour
         for i in range(len(contour)):
-            pt1 = tuple(contour[i])
-            pt2 = tuple(contour[(i + 1) % len(contour)])
-            draw_line(image, pt1, pt2, color)
+            pt1 = tuple(contour[i])  # Get the current point as a tuple
+            pt2 = tuple(contour[(i + 1) % len(contour)])  # Get the next point (wrap around to the beginning if it's the last point)
+            draw_line(image, pt1, pt2, color)  # Draw a line segment between pt1 and pt2 in the image
 
 
 
