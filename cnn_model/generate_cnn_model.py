@@ -74,7 +74,7 @@ def prepare_images():
             image_path = os.path.join(class_dir, filename)
             img = acquire_coin_image(image_path)
             gray = convert_to_grayscale(img)
-            resized_img = cv2.resize(gray, (416, 416))
+            resized_img = cv2.resize(gray, (128, 128))
             images.append(resized_img)
             labels.append(class_index)
     images = np.array(images)
@@ -97,7 +97,7 @@ def train():
 
     # Build CNN model
     model = Sequential()
-    model.add(Conv2D(32, kernel_size=(3, 3), activation="relu", input_shape=(416, 416, 1)))
+    model.add(Conv2D(32, kernel_size=(3, 3), activation="relu", input_shape=(128, 128, 1)))
     model.add(MaxPooling2D(pool_size=(2, 2)))
     model.add(Conv2D(64, kernel_size=(3, 3), activation="relu"))
     model.add(MaxPooling2D(pool_size=(2, 2)))
@@ -121,7 +121,7 @@ def train():
 
 def predict(img, model):
     new_gray = convert_to_grayscale(img)
-    new_resized = cv2.resize(new_gray, (416, 416))
+    new_resized = cv2.resize(new_gray, (128, 128))
     new_input = np.expand_dims(new_resized, axis=0)
     new_input = np.expand_dims(new_input, axis=-1)
     cnn_model = model
@@ -146,3 +146,4 @@ def predict(img, model):
         return ('50kr', 0.5)
     else:
         return ('1tl', 1.0)
+
